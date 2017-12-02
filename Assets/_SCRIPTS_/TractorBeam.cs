@@ -5,13 +5,13 @@ using UnityEngine;
 public class TractorBeam : MonoBehaviour {
 
     public LayerMask collectables;
-    BoxCollider2D trigger;
-    GameManager gm;
+    
+    
 
 
 
     private void OnEnable() {
-        gm = GetComponent<GameManager>();
+        
         
     }
     // Update is called once per frame
