@@ -24,7 +24,7 @@ public class Bullet : MonoBehaviour {
         
         if (collision.CompareTag("Player")) {
             
-            collision.GetComponent<Health>().TakeDamage(damage);
+            collision.GetComponent<Health>().TakeDamage(damage, GetComponent<AudioSource>());
         }
     }
 }

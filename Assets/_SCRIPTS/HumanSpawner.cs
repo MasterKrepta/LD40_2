@@ -7,6 +7,7 @@ public class HumanSpawner : MonoBehaviour {
     public Transform human;
     int maxNumber = 15;
     int currentHumans = 0;
+    
 
     float minDistance = -50;
     float maxDistance = 50;
@@ -15,18 +16,28 @@ public class HumanSpawner : MonoBehaviour {
         SpawnHumans();
 	}
 
+    private void OnEnable() {
+        GameManager.OnPickup += CheckForHumanSpawn;
+        
+    }
 
-    private void Update() {
-        if (currentHumans <= 13) {
+    private void OnDisable() {
+        GameManager.OnPickup -= CheckForHumanSpawn;
+    }
+
+    private void CheckForHumanSpawn() {
+        currentHumans--;
+        if (currentHumans <= 5) {
             SpawnHumans();
         }
     }
     void SpawnHumans() {
-        Debug.Log("Spawmomg");
+        
         for (int i = currentHumans; i < maxNumber; i++) {
             Vector3 randPos = GetRandomSpawnPoint();
             randPos.y = -5;
-            Instantiate(human, randPos, Quaternion.identity);
+            Transform go =  Instantiate(human, randPos, Quaternion.identity) as Transform;
+            go.parent = this.gameObject.transform;
             currentHumans++;
         }
         

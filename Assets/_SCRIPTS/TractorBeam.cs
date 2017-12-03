@@ -42,6 +42,8 @@ public class TractorBeam : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if(collision.tag == "Collectable") {
+            AudioSource effect = GetComponent<AudioSource>();
+            effect.Play();
             GameManager.Instance.CallOnPickup();
             Destroy(collision.gameObject);
 

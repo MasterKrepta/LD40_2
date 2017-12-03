@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
+    public GameObject gameOverScreen;
     public delegate void ScoreEvents();
     public delegate void GameEvents();
     public static event ScoreEvents OnPickup;
@@ -22,6 +23,11 @@ public class GameManager : MonoBehaviour
     Text txtHumans;
     [SerializeField]
     Text txtThreatLevel;
+
+    [SerializeField]
+    Text finalHumans;
+    [SerializeField]
+    Text finalThreatLevel;
 
     float respawnTime = 3f;
 
@@ -48,14 +54,20 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    private void Start() {
+        gameOverScreen.SetActive(false);
+    }
     private void OnEnable() {
         OnPickup += UpdateHumans;
+        OnDeath += CallGameOver;
         OnTreatIncrease += UpdateThreat;
+        
 
     }
     private void OnDisable() {
         OnPickup -= UpdateHumans;
         OnTreatIncrease -= UpdateThreat;
+        OnDeath -= CallGameOver;
     }
 
     public void CallOnPickup() {
@@ -84,8 +96,9 @@ public class GameManager : MonoBehaviour
     void UpdateHumans() {
         currentHumans++;
         txtHumans.text = currentHumans.ToString();
-        
-        if(currentHumans % 5 == 0) { // every five humans increase threat by one
+        finalHumans.text = "Final Humans Abducted: " + currentHumans.ToString();
+
+        if (currentHumans % 5 == 0) { // every five humans increase threat by one
             CallOnTreatIncrease();
         }
     }
@@ -93,6 +106,7 @@ public class GameManager : MonoBehaviour
     void UpdateThreat() {
         currentThreat++;
         txtThreatLevel.text = currentThreat.ToString();
+        finalThreatLevel.text = "Final Threat Level: " + currentThreat.ToString();
         //TODO send more millitary
     }
 
@@ -100,5 +114,21 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(respawnTime);
         this.gameObject.SetActive(true);
     }
+
+    public void CallGameOver(){
+        //Time.timeScale = 0;
+        gameOverScreen.SetActive(true);
+    }
+
+
+    public void EndGame() {
+        Application.Quit();
+    }
+
+    public void Restart() {
+        gameOverScreen.SetActive(false);
+        Application.LoadLevel(1);
+    }
+
 
 }

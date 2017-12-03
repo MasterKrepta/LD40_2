@@ -28,10 +28,14 @@ public class Health : MonoBehaviour {
         GameManager.RespawnPlayer -= Respawn;
     }
 
-    public void TakeDamage(float amount) {
-        health -= amount;
+    public void TakeDamage(float damage, AudioSource effect) {
+        
+        health -= damage;
+        effect.Play();
         healthbar.fillAmount = health / maxHealth;
         if (health <= 0) {
+            AudioSource deathAudio = GetComponent<AudioSource>();
+            deathAudio.Play();
             GameManager.Instance.CallOnDeath();
         }
     }
