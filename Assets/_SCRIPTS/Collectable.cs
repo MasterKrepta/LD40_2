@@ -26,11 +26,9 @@ public class Collectable : MonoBehaviour {
 	}
 
     public void Tractor(GameObject hold) {
-        
+        MoveBackandForth moveScript = GetComponent<MoveBackandForth>();
+        moveScript.enabled = false;
         rb.gravityScale = 0;
-        Debug.Log("tractor");
-
-        
         
     }
     

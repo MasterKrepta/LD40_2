@@ -33,7 +33,7 @@ public class TractorBeam : MonoBehaviour {
         
         if (hit.collider != null) {
             if (hit.collider.tag == "Collectable") {
-                Debug.Log("hit " + hit.collider);
+                //Debug.Log("hit " + hit.collider);
                 
                 hit.collider.GetComponent<Collectable>().Tractor(this.gameObject);
             }

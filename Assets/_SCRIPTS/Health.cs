@@ -6,20 +6,26 @@ using UnityEngine.UI;
 public class Health : MonoBehaviour {
 
     [SerializeField]
+    private Camera cam;
+    [SerializeField]
     private float health;
     float maxHealth = 100;
     [SerializeField]
     Image healthbar;
-	
+
+
+    
 	void Start () {
         health = maxHealth;
 	}
     private void OnEnable() {
         GameManager.OnDeath += KillPlayer;
+        GameManager.RespawnPlayer += Respawn;
     }
 
     private void OnDisble() {
         GameManager.OnDeath -= KillPlayer;
+        GameManager.RespawnPlayer -= Respawn;
     }
 
     public void TakeDamage(float amount) {
@@ -31,6 +37,13 @@ public class Health : MonoBehaviour {
     }
 
    void KillPlayer() {
+        cam.transform.parent = null;
         this.gameObject.SetActive(false);
+        // call respawn
+    }
+
+   void  Respawn() {
+        this.gameObject.SetActive(true);
+        cam.transform.parent = this.gameObject.transform;
     }
 }

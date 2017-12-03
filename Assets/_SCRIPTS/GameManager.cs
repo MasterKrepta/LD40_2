@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     public static event ScoreEvents OnTreatIncrease;
     public static event GameEvents OnDeath;
+    public static event GameEvents RespawnPlayer;
 
 
 
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     Text txtThreatLevel;
 
-
+    float respawnTime = 3f;
 
     public int currentHumans = 0;
     public int currentThreat = 0;
@@ -50,9 +51,10 @@ public class GameManager : MonoBehaviour
     private void OnEnable() {
         OnPickup += UpdateHumans;
         OnTreatIncrease += UpdateThreat;
+
     }
     private void OnDisable() {
-        OnPickup = UpdateHumans;
+        OnPickup -= UpdateHumans;
         OnTreatIncrease -= UpdateThreat;
     }
 
@@ -70,15 +72,20 @@ public class GameManager : MonoBehaviour
     }
 
     public void CallOnDeath() {
+        StartCoroutine(WaitForRespawn());
         OnDeath();
+        
     }
 
+    public void CallRespawn() {
+        RespawnPlayer();
+    }
 
     void UpdateHumans() {
         currentHumans++;
         txtHumans.text = currentHumans.ToString();
         
-        if(currentThreat % 5 == 0) { // every five humans increase threat by one
+        if(currentHumans % 5 == 0) { // every five humans increase threat by one
             CallOnTreatIncrease();
         }
     }
@@ -88,4 +95,10 @@ public class GameManager : MonoBehaviour
         txtThreatLevel.text = currentThreat.ToString();
         //TODO send more millitary
     }
+
+    IEnumerator WaitForRespawn() {
+        yield return new WaitForSeconds(respawnTime);
+        this.gameObject.SetActive(true);
+    }
+
 }
