@@ -15,8 +15,7 @@ public class EnemyHealth : MonoBehaviour {
     }
 
     public void TakeDamage(float damage, AudioSource effect) {
-        Debug.Log(effect.clip.name);
-       
+
         effect.Play();
         health -= damage;
 

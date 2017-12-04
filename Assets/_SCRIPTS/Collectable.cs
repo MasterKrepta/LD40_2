@@ -26,8 +26,7 @@ public class Collectable : MonoBehaviour {
 	}
 
     public void Tractor(GameObject hold) {
-        AudioSource effect = GetComponent<AudioSource>();
-        effect.Play();
+        
         MoveBackandForth moveScript = GetComponent<MoveBackandForth>();
         moveScript.enabled = false;
         rb.gravityScale = 0;

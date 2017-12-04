@@ -8,7 +8,7 @@ public class EnemySpawn : MonoBehaviour {
     private int enemiesToSpawn = 2;
 
     [SerializeField]
-    private int spawnRadius = 20;
+    private int spawnRadius = 6;
     Transform player;
 
     public Transform enemy;

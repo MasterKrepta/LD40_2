@@ -5,25 +5,37 @@ using UnityEngine;
 public class TractorBeam : MonoBehaviour {
 
     public LayerMask collectables;
-    
-    
+    public GameObject tractorBeam;
+    AudioSource beamAudio;
 
 
 
-    private void OnEnable() {
-        
-        
+    private void Start() {
+        tractorBeam.SetActive(false);
+        beamAudio = tractorBeam.GetComponent<AudioSource>();
     }
     // Update is called once per frame
     void Update () {
 
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButton(0)) {
 
-           
-                FireBeam();
+            tractorBeam.SetActive(true);
+            StartCoroutine(playAudio());
+            
+            FireBeam();
             }
+
+        if (Input.GetMouseButtonUp(0)) {
+            tractorBeam.SetActive(false);
+            //beamAudio.Stop();
+            StopCoroutine(playAudio());
+        }
 	}
 
+    IEnumerator playAudio() {
+        beamAudio.Play();
+        yield return new WaitForSeconds(beamAudio.clip.length);
+    }
     void FireBeam() {
         
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
